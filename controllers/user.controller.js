@@ -1,5 +1,6 @@
 const MyUserSchema = require('../models/user.model');
 const bcrypt = require('bcrypt');
+const jwt = require('jsonwebtoken');
 
 exports.createUser = async (req,res) => {
     const {password,email} = req.body;
@@ -15,6 +16,25 @@ exports.createUser = async (req,res) => {
         return res.status(200).send({msg: 'User added successfully'})
     } catch (error) {
         return res.status(500).send({msg:error})
+    }
+}
+
+exports.login = async (req, res) => {
+    const {email, password} = req.body
+    try {
+        const user = await MyUserSchema.findOne({email:email})
+        if(!user){
+            return res.status(404).send({msg: 'User not found'})
+        }
+        const passwordIsCorrect = bcrypt.compareSync(password,user.password)
+        if(!passwordIsCorrect){
+            return res.status(404).send({msg: 'bad credentials'})
+        }
+        const token = jwt.sign({id:user._id},process.env.TokenPassword);
+        
+        return res.status(200).send({token})
+    } catch (error) {
+        return res.status(500).send({msg: 'bad credentials'})
     }
 }
 
