@@ -23,7 +23,6 @@ user.put('/updateUser/:id',updateUser);
 user.delete('/deleteUser/:id',deleteUser)
 
 // get current user
-
-user.get('/current',isAuth, (req,res) => res.send({user:req.user}))
+user.get('/current',isAuth,(req,res) => {res.send({user:req.user})})
 
 module.exports = user

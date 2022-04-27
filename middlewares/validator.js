@@ -9,8 +9,8 @@ exports.RegisterValidation = [
 ]
 
 exports.LoginValidation = [
-    body('email','email must be email format').isEmail().normalizeEmail(),
-    body('password','password must min 5 caracters').isLength({min:5})
+  body('email','email must be email format').isEmail().normalizeEmail(),
+  body('password','password must min 5 caracters').isLength({min:5})
 ]
 
 exports.Validation = (req,res,next) => {
